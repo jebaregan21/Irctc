@@ -15,12 +15,14 @@ public class Carriage {
     private int tatkalSeatCount;
     private int generalSeatCount;
     private final String type;
+    private String name;
 
-    public Carriage(int capacity, String type, int tatkalPercentage){
+    public Carriage(int capacity, String type, int tatkalPercentage, String layout){
         this.capacity = capacity;
         this.type = type;
         tatkalSeatCount = capacity*(tatkalPercentage/100);
         generalSeatCount = capacity - tatkalSeatCount;
+        setLayout(layout);
     }
 
     public int getCapacity() {
@@ -31,23 +33,40 @@ public class Carriage {
         return type;
     }
 
-    public Ticket bookGeneralTicket(Passenger passenger) throws NoVacancyException {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private void setLayout(String layout){
+        String[] berths = layout.split(" ");
+        int count = 1;
+        for(String berth : berths){
+            layoutMap.put(berth,count);
+            berthMap.put(count,berth);
+        }
+    }
+
+    public Ticket bookGeneralTicket(Passenger passenger){
         if(generalSeatCount<=0)
-            throw new NoVacancyException();
+            return null;
         Ticket ticket = bookTicket(passenger);
         generalSeatCount--;
         return ticket;
     }
 
-    public Ticket bookTatkalTicket(Passenger passenger) throws NoVacancyException{
+    public Ticket bookTatkalTicket(Passenger passenger){
         if(tatkalSeatCount<=0)
-            throw new NoVacancyException();
+            return null;
         Ticket ticket = bookTicket(passenger);
         tatkalSeatCount--;
         return ticket;
     }
 
-    private Ticket bookTicket(Passenger passenger) throws NoVacancyException {
+    private Ticket bookTicket(Passenger passenger){
         int seat = -1;
         try {
             if(passenger.getPreference()!=null)
@@ -57,11 +76,11 @@ public class Carriage {
                 seat = findAvailableSeat();
             }
             catch (NoVacancyException exception){
-                throw new NoVacancyException();
+                return null;
             }
         }
         bookedTickets.put(seat,passenger);
-        return new Ticket(passenger,getBerth(seat), seat);
+        return new Ticket(passenger,getBerth(seat), seat, name);
     }
 
     private int findPreferredSeat(String preference) throws NoVacancyException {
