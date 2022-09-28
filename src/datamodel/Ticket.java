@@ -16,26 +16,6 @@ public class Ticket {
         this.carriage = carriage;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getBerth() {
-        return berth;
-    }
-
-    public int getSeat() {
-        return seat;
-    }
-
     public String toString(){
         return "Name : "+name+
                 "\nGender : "+gender+

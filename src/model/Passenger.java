@@ -23,10 +23,6 @@ public class Passenger {
         return gender;
     }
 
-    public Quota getQuota() {
-        return quota;
-    }
-
     public String getPreference() {
         return preference;
     }

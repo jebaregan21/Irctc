@@ -118,4 +118,8 @@ public class Carriage {
     public int getGeneralAvailability(){
         return generalSeatCount;
     }
+
+    public Map getChart(){
+        return new HashMap<>(bookedTickets);
+    }
 }

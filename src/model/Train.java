@@ -55,8 +55,8 @@ public class Train {
         priceMap.put(carriage.getType(), price);
     }
 
-    public int getPrice(int count, String type){
-        return priceMap.get(type) * count;
+    public int getPrice(String type){
+        return priceMap.get(type);
     }
     public List<Ticket> bookGeneralTicket(List<Passenger> passengers, String type) throws NoVacancyException {
         List<Carriage> carriageList = carriageListMap.get(type);
@@ -104,5 +104,17 @@ public class Train {
 
     public void addStop(Station station, Time time){
         stationTimeMap.put(station,time);
+        station.addToTrainSet(trainNo);
+    }
+
+    public List<Map<Integer,Passenger>> getChart(){
+        List<Map<Integer,Passenger>> result = new ArrayList<>();
+        for(String type : carriageListMap.keySet()){
+            List<Carriage> carriageList = carriageListMap.get(type);
+            for(Carriage carriage : carriageList){
+                result.add(carriage.getChart());
+            }
+        }
+        return result;
     }
 }

@@ -1,11 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Station {
     private final String name, code;
-    private final List<Integer> trainList = new ArrayList<>();
+    private final Set<Integer> trainSet = new HashSet<>();
 
     public Station(String name, String code){
         this.name = name;
@@ -20,11 +22,11 @@ public class Station {
         return code;
     }
 
-    public void addToTrainList(int trainNo){
-        trainList.add(trainNo);
+    public void addToTrainSet(int trainNo){
+        trainSet.add(trainNo);
     }
 
-    public List<Integer> getTrainList(){
-        return new ArrayList<>(trainList);
+    public Set<Integer> getTrainSet(){
+        return new HashSet<>(trainSet);
     }
 }
