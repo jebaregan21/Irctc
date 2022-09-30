@@ -56,4 +56,16 @@ public class Time implements Comparable<Time>{
         String min = (mm<10)?"0"+mm:Integer.toString(mm);
         return "Day : "+day+" Time : "+hour+":"+min;
     }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getHr() {
+        return hr;
+    }
+
+    public int getMm() {
+        return mm;
+    }
 }

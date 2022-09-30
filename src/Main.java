@@ -2,6 +2,7 @@ import database.RailwayDatabase;
 import datamodel.CarriageInfo;
 import datamodel.Quota;
 import datamodel.Time;
+import datamodel.TrainSearchModel;
 import exception.InvalidTimeException;
 import exception.NoVacancyException;
 import model.Carriage;
@@ -10,9 +11,7 @@ import model.Station;
 import model.Train;
 import utility.DateUtility;
 
-import java.lang.annotation.Target;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
@@ -37,9 +36,16 @@ public class Main {
         Station station3 = new Station("MADURAI","MDU");
         Station station4 = new Station("CHENNAI","CHN");
 
-        Passenger passenger = new Passenger("Jeba","MALE",20, Quota.GENERAL, station1, station2);
-        Passenger passenger1 = new Passenger("Killer","MALE",30,Quota.GENERAL,station1,station4);
+        RailwayDatabase railwayDatabase = RailwayDatabase.getInstance();
+        railwayDatabase.addStation(station1);
+        railwayDatabase.addStation(station2);
+        railwayDatabase.addStation(station3);
+        railwayDatabase.addStation(station4);
 
+        Passenger passenger = new Passenger("Jeba","MALE",20, Quota.GENERAL, station1, station2);
+        Passenger passenger1 = new Passenger("Regan","MALE",30,Quota.GENERAL,station1,station4);
+        Passenger passenger3 = new Passenger("Raj","MALE",60,Quota.GENERAL,station2,station4);
+        Passenger passenger4 = new Passenger("Cool","MALE",44,Quota.GENERAL,station1,station4);
 
         Train train = new Train(15334,"Chennai Express");
         train.addStop(station1,new Time("0 18 45"));
@@ -47,18 +53,22 @@ public class Main {
         train.addStop(station3,new Time("1 3 45"));
         train.addStop(station4,new Time("1 7 00"));
 
-        RailwayDatabase railwayDatabase = RailwayDatabase.getInstance();
         railwayDatabase.addTrain(train);
 
         train.addCarriage(carriage,350);
         List<Passenger> list1 = new ArrayList<>();
         list1.add(passenger);
+        list1.add(passenger4);
         List<Passenger> list2 = new ArrayList<>();
         list2.add(passenger1);
+        list2.add(passenger3);
 
         System.out.println(train.bookGeneralTicket(list1,"SLEEPER"));
         System.out.println(train.bookGeneralTicket(list2,"SLEEPER"));
 
+        TrainSearchModel model = new TrainSearchModel("SVG","CHN","03/10/2022");
+        System.out.println(railwayDatabase.getTrainsBetween(model));
+        System.out.println(railwayDatabase.getTrainsBetween(model).get(0).getAvailability());
 //        List<Passenger> list = new ArrayList<>();
 //        list.add(passenger);
 //        list.add(passenger);

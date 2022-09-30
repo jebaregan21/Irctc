@@ -24,7 +24,7 @@ public class Carriage {
     public Carriage(CarriageInfo carriageInfo) {
         this.capacity = carriageInfo.getCapacity();
         this.type = carriageInfo.getType();
-        tatkalSeatCount = capacity * (carriageInfo.getTatkalPercentage() / 100);
+        tatkalSeatCount = (int)(capacity * ((float)carriageInfo.getTatkalPercentage() / 100));
         generalSeatCount = capacity - tatkalSeatCount;
         setLayout(carriageInfo.getLayout());
     }
@@ -37,6 +37,7 @@ public class Carriage {
         this.tatkalSeatCount = carriage.tatkalSeatCount;
         this.layoutMap.putAll(carriage.layoutMap);
         this.berthMap.putAll(carriage.berthMap);
+        this.route = carriage.route;
     }
 
     public int getCapacity() {
@@ -139,7 +140,7 @@ public class Carriage {
     }
 
     private String getBerth(int seatNo) {
-        return berthMap.get(getBerthInt(seatNo));
+        return berthMap.get(getBerthInt(seatNo-1));
     }
 
     public int getTatkalAvailability() {
@@ -170,7 +171,6 @@ public class Carriage {
         int firstEnd = route.get(passenger1.getDropPoint());
         int secondStart = route.get(passenger2.getBoardingPoint());
         int secondEnd = route.get(passenger2.getDropPoint());
-        System.out.println(firstStart+" "+firstEnd+" "+secondStart+" "+secondEnd);
         if(secondStart>firstStart){
             if(secondStart-firstEnd<0)
                 return true;

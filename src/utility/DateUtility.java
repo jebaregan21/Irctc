@@ -16,4 +16,8 @@ public class DateUtility {
         calendar.add(Calendar.DATE,increment);
         return calendar.getTime();
     }
+
+    public Date getDate(){
+        return date;
+    }
 }

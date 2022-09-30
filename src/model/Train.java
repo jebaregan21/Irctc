@@ -14,13 +14,14 @@ public class Train {
     private final Map<String,List<Carriage>> carriageListMap;
     private final Map<String,Integer> priceMap;
 
-    private final Map<Station,Integer> route = new HashMap<>();
+    private final Map<Station,Integer> route;
     public Train(int trainNo, String name){
         this.trainNo = trainNo;
         this.name = name;
         stationTimeMap = new LinkedHashMap<>();
         priceMap = new HashMap<>();
         carriageListMap = new HashMap<>();
+        route = new HashMap<>();
     }
 
     public Train(Train train){
@@ -29,6 +30,7 @@ public class Train {
         this.stationTimeMap = train.stationTimeMap;
         priceMap = train.priceMap;
         this.carriageListMap = CloneUtility.cloneCarriageMap(train.carriageListMap);
+        this.route = train.route;
     }
 
     public int getTrainNo() {
@@ -135,6 +137,10 @@ public class Train {
             }
         }
         return result;
+    }
+
+    public Map<Station,Time> getRoute(){
+        return new LinkedHashMap<>(stationTimeMap);
     }
 
     public String toString(){

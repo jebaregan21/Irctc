@@ -1,12 +1,12 @@
 package database;
 
+import datamodel.TrainSearchModel;
+import datamodel.Time;
 import model.Station;
 import model.Train;
-import utility.CloneUtility;
 import utility.DateUtility;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class RailwayDatabase {
@@ -26,6 +26,9 @@ public class RailwayDatabase {
         return trainMap.get(trainNo);
     }
 
+    public Station getStation(String code){
+        return stationMap.get(code);
+    }
     public List<Train> getTrainsReaching(String stationName){
         String stationCode = stationCodeMap.get(stationName);
         Station station = stationMap.get(stationCode);
@@ -73,5 +76,29 @@ public class RailwayDatabase {
             tempMap.put(train.getTrainNo(),train);
             journeyMap.put(date,tempMap);
         }
+    }
+
+    public List<Train> getTrainsBetween(TrainSearchModel model){
+        Set<Integer> sourceTrainSet = model.getSource().getTrainSet();
+        Set<Integer> desTrainSet = model.getDestination().getTrainSet();
+        List<Train> resultList = new ArrayList<>();
+        for(int trainNo : sourceTrainSet){
+            if(desTrainSet.contains(trainNo)){
+                if(doesReach(trainNo,model.getSource(),model.getDestination()))
+                    resultList.add(getTrain(trainNo));
+            }
+        }
+        return resultList;
+    }
+
+    private boolean doesReach(int trainNo, Station source, Station destination){
+        Train train = getTrain(trainNo);
+        Map<Station, Time> routeMap = train.getRoute();
+        Time sourceTime = routeMap.get(source);
+        Time desTime = routeMap.get(destination);
+        if(sourceTime.compareTo(desTime)<0){
+            return true;
+        }
+        return false;
     }
 }
