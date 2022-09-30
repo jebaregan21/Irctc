@@ -18,9 +18,9 @@ public class Ticket {
 
     public String toString(){
         return "Name : "+name+
-                "\nGender : "+gender+
-                "\nAge : "+age+
-                "\nSeat : "+carriage+" "+seat+
-                "\nBerth : "+berth;
+                "\tGender : "+gender+
+                " \tAge : "+age+
+                "\tSeat : "+carriage+" "+seat+
+                "\tBerth : "+berth;
     }
 }

@@ -3,19 +3,36 @@ package model;
 import datamodel.Ticket;
 import datamodel.Time;
 import exception.NoVacancyException;
+import utility.CloneUtility;
 
 import java.util.*;
 
 public class Train {
     private final int trainNo;
     private final String name;
-    private final Map<Station, Time> stationTimeMap = new LinkedHashMap<>();
-    private final Map<String,List<Carriage>> carriageListMap = new HashMap<>();
-    private final Map<String,Integer> priceMap = new HashMap<>();
+    private final Map<Station, Time> stationTimeMap;
+    private final Map<String,List<Carriage>> carriageListMap;
+    private final Map<String,Integer> priceMap;
 
+    private final Map<Station,Integer> route = new HashMap<>();
     public Train(int trainNo, String name){
         this.trainNo = trainNo;
         this.name = name;
+        stationTimeMap = new LinkedHashMap<>();
+        priceMap = new HashMap<>();
+        carriageListMap = new HashMap<>();
+    }
+
+    public Train(Train train){
+        this.name = train.name;
+        this.trainNo = train.trainNo;
+        this.stationTimeMap = train.stationTimeMap;
+        priceMap = train.priceMap;
+        this.carriageListMap = CloneUtility.cloneCarriageMap(train.carriageListMap);
+    }
+
+    public int getTrainNo() {
+        return trainNo;
     }
 
     public String getAvailability(){
@@ -40,6 +57,7 @@ public class Train {
     public void addCarriage(Carriage carriage, int price){
         String type = carriage.getType();
         setPrice(carriage,price);
+        carriage.setRoute(route);
         if(carriageListMap.containsKey(type)) {
             carriage.setName(type+""+(carriageListMap.get(type).size()+1));
             carriageListMap.get(type).add(carriage);
@@ -105,6 +123,7 @@ public class Train {
     public void addStop(Station station, Time time){
         stationTimeMap.put(station,time);
         station.addToTrainSet(trainNo);
+        route.put(station,route.size());
     }
 
     public List<Map<Integer,Passenger>> getChart(){
@@ -116,5 +135,9 @@ public class Train {
             }
         }
         return result;
+    }
+
+    public String toString(){
+        return name+" "+trainNo;
     }
 }

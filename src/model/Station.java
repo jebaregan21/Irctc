@@ -29,4 +29,8 @@ public class Station {
     public Set<Integer> getTrainSet(){
         return new HashSet<>(trainSet);
     }
+
+    public String toString(){
+        return name+" "+code;
+    }
 }
